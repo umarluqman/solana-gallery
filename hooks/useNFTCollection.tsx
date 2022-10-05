@@ -58,22 +58,21 @@ const getSolanaNFTs = async (
     (item) => item.data.symbol
   );
 
-  const collectionList = Object.keys(groupByCollection).map((item) => {
-    return {
-      collectionName: groupByCollection[item][0].data.name.split(" #")[0],
-      collection: groupByCollection[item],
-    };
-  });
+  //   const collectionList = Object.keys(groupByCollection).map((key) => {
+  //     return {
+  //       collectionName: groupByCollection[key][0].data.name.split(" #")[0],
+  //       collection: groupByCollection[key],
+  //     };
+  //   });
 
-  console.log({ collectionList, groupByCollection });
-
-  const getNFTwithMetadata = async () => {
+  const getNFTCollectionwithImage = async () => {
     return await Promise.all(
-      filteredNFTList.map(async (item) => {
-        const response = await fetch(item.data.uri);
+      Object.keys(groupByCollection).map(async (key) => {
+        const response = await fetch(groupByCollection[key][0].data.uri);
         const data = await response.json();
         return {
-          ...item,
+          collectionName: groupByCollection[key][0].data.name.split(" #")[0],
+          ...groupByCollection[key],
           offChain: {
             ...data,
           },
@@ -82,12 +81,18 @@ const getSolanaNFTs = async (
     );
   };
 
-  const derivedNFTList = await getNFTwithMetadata();
+  const derivedNFTList = await getNFTCollectionwithImage();
+
+  console.log({ derivedNFTList, groupByCollection });
 
   return derivedNFTList;
 };
 
-export const useNFT = ({ onError }: { onError: (error: Error) => void }) => {
+export const useNFTCollection = ({
+  onError,
+}: {
+  onError: (error: Error) => void;
+}) => {
   return useMutation(getSolanaNFTs, {
     onError,
   });
