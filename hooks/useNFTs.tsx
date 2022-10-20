@@ -1,7 +1,7 @@
 import { getParsedNftAccountsByOwner } from "@nfteyez/sol-rayz";
 import { MetadataKey } from "@nfteyez/sol-rayz/dist/config/metaplex";
-import * as React from "react";
-import { useMutation } from "@tanstack/react-query";
+import { Connection } from "@solana/web3.js";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import groupBy from "lodash.groupby";
 
 export type NFTTokenAccount = {
@@ -43,36 +43,33 @@ export interface IuseNFTProps {
 }
 
 const getSolanaNFTs = async (
-  publicAddress: IuseNFTProps["publicAddress"]
+  publicAddress: IuseNFTProps["publicAddress"],
+  collectionId: string
 ): Promise<NFTTokenAccount[]> => {
   const NFTList = await getParsedNftAccountsByOwner({
     publicAddress: publicAddress,
+    connection: new Connection("https://solana-api.projectserum.com"),
   });
 
   const filteredNFTList = NFTList.filter((item) => {
     return item.data.creators !== undefined;
   });
 
-  const groupByCollection = groupBy(
-    filteredNFTList,
-    (item) => item.data.symbol
+  const NFTListByUpdateAuthority = filteredNFTList.filter(
+    ({ updateAuthority }) => {
+      return updateAuthority === collectionId;
+    }
   );
 
-  //   const collectionList = Object.keys(groupByCollection).map((key) => {
-  //     return {
-  //       collectionName: groupByCollection[key][0].data.name.split(" #")[0],
-  //       collection: groupByCollection[key],
-  //     };
-  //   });
+  console.log({ NFTListByUpdateAuthority });
 
-  const getNFTCollectionwithImage = async () => {
+  const getNFTwithMetadata = async () => {
     return await Promise.all(
-      Object.keys(groupByCollection).map(async (key) => {
-        const response = await fetch(groupByCollection[key][0].data.uri);
+      NFTListByUpdateAuthority.map(async (item) => {
+        const response = await fetch(item.data.uri);
         const data = await response.json();
         return {
-          collectionName: groupByCollection[key][0].data.name.split(" #")[0],
-          ...groupByCollection[key],
+          ...item,
           offChain: {
             ...data,
           },
@@ -81,19 +78,18 @@ const getSolanaNFTs = async (
     );
   };
 
-  const derivedNFTList = await getNFTCollectionwithImage();
-
-  console.log({ derivedNFTList, groupByCollection });
+  const derivedNFTList = await getNFTwithMetadata();
 
   return derivedNFTList;
 };
 
-export const useNFTCollection = ({
-  onError,
-}: {
-  onError: (error: Error) => void;
-}) => {
-  return useMutation(getSolanaNFTs, {
-    onError,
-  });
+export const useNFTs = ({ walletAddress, collectionId }) => {
+  return useQuery(
+    ["collection", walletAddress, collectionId],
+    () => getSolanaNFTs(walletAddress, collectionId),
+    {
+      enabled: !!walletAddress,
+      retry: false,
+    }
+  );
 };
