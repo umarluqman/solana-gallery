@@ -70,7 +70,7 @@ export default function WalletOverview({ height }: { height: number | null }) {
             >
               <motion.div
                 className="relative w-full"
-                initial={{ scale: 1, y: 305.5 }}
+                initial={{ scale: 1, y: 306 }}
                 animate={{ scale: 0.7, y: 0 }}
                 transition={{ duration: 1.2, ease: [0.43, 0.13, 0.23, 0.96] }}
               >
