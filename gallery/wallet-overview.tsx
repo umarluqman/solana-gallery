@@ -1,18 +1,31 @@
+import { motion } from "framer-motion";
 import Image from "next/image";
-import React, { useEffect } from "react";
+import Link from "next/link";
 import { useRouter } from "next/router";
+import React from "react";
+import { Breadcrumbs } from "../components/Breadcrumbs";
 import { SearchIcon } from "../components/SearchIcon";
 import {
   useMutationCollection,
   useQueryCollection,
 } from "../hooks/useNFTCollections";
-import { motion } from "framer-motion";
-import Link from "next/link";
+import { truncateAddress } from "../utils/truncateAddress";
 
-const transition = { duration: 0.6, ease: [0.43, 0.13, 0.23, 0.96] };
+const transition = {
+  duration: 0.6,
+  ease: [0.43, 0.13, 0.23, 0.96],
+};
 
-export default function Home() {
+const gridTransition = {
+  duration: 0.6,
+  delay: 1,
+  ease: [0.43, 0.13, 0.23, 0.96],
+};
+
+export default function WalletOverview({ height }: { height: number | null }) {
   const router = useRouter();
+
+  console.log({ height });
 
   const walletAddress = router.query.address as string;
   console.log({ walletAddress });
@@ -24,6 +37,10 @@ export default function Home() {
     },
     []
   );
+
+  const breadcrumbs = [
+    { title: `${truncateAddress(walletAddress)}`, isCurrentPage: true },
+  ];
 
   const {
     mutate,
@@ -47,44 +64,29 @@ export default function Home() {
 
   // const isLoading = true;
 
-  console.log({ dataQuery });
+  console.log({ dataQuery, query: router.query });
+
+  const yValue = height / 2 - 113;
+
+  console.log({ yValue, height });
+
+  const initial = { scale: 1, y: yValue };
+
+  const animateAsProps = { scale: 0.7, y: 0 };
 
   return (
     <>
       <div className="grid grid-cols-12 gap-4">
         <div className="col-start-4 col-span-6">
-          <motion.div
-            // initial={{ y: 306 }}
-            // animate={{ y: 0 }}
-            // transition={{ duration: 2, ease: [0.43, 0.13, 0.23, 0.96] }}
-            className="flex flex-col"
-          >
-            {/* <div className="flex text-5xl justify-center items-center font-sans text-gray-900 font-light text-center mb-9">
-              <span className="mr-5">
-                <div className="rounded-lg h-10 w-10 border-2 border-gray-400 rotate-60"></div>
-              </span>
-              Rect
-            </div> */}
-            {/* <motion.div
-              initial={{ opacity: 0 }}
-              className="text-center text-slate-400 font-light tracking-wider mb-6 text-lg"
-            >
-              Explore NFTs inside any{" "}
-              <Image
-                src="/solana.svg"
-                alt="Solana Logo"
-                width={28}
-                height={16}
-              />{" "}
-              SOLANA wallet
-            </motion.div> */}
+          <motion.div className="flex flex-col">
             <form
               className="flex content-center items-center"
               onSubmit={handleSubmit}
             >
               <motion.div
                 className="relative w-full"
-                initial={{ scale: 1, y: 306 }}
+                initial={{ scale: 1, y: 305.5 }}
+                // style={{ scale: 1, y: 305.5 }}
                 animate={{ scale: 0.7, y: 0 }}
                 transition={{ duration: 1.2, ease: [0.43, 0.13, 0.23, 0.96] }}
               >
@@ -112,50 +114,14 @@ export default function Home() {
           </motion.div>
         </div>
       </div>
-      {isLoading ? (
-        <div className="flex flex-col justify-center items-center h-full">
-          <motion.div
-            initial={{ x: -100, y: -5 }}
-            animate={{ x: 100, y: -5 }}
-            transition={{
-              flip: Infinity,
-              duration: 1,
-            }}
-            className="bg-slate-500"
-            style={{
-              height: 4,
-              width: 120,
-            }}
-          />
-          <motion.div
-            initial={{ x: -180, y: -5 }}
-            animate={{ x: 180, y: -5 }}
-            transition={{
-              flip: Infinity,
-              duration: 1.2,
-            }}
-            className="bg-slate-400"
-            style={{
-              height: 4,
-              width: 140,
-            }}
-          />
-          <motion.div
-            initial={{ x: -100, y: -5 }}
-            animate={{ x: 100, y: -5 }}
-            transition={{
-              flip: Infinity,
-              duration: 1.5,
-            }}
-            className="bg-slate-900"
-            style={{
-              height: 4,
-              width: 160,
-            }}
-          />
-        </div>
-      ) : (
-        <div className="grid grid-cols-[repeat(auto-fill,_minmax(320px,_1fr))] mt-20 gap-6">
+      <Breadcrumbs animate breadcrumbs={breadcrumbs} />
+      {isLoading ? null : (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={gridTransition}
+          className="grid grid-cols-[repeat(auto-fill,_minmax(320px,_1fr))] mt-20 gap-6"
+        >
           {dataQuery?.map((item) => (
             <div key={item.collectionName}>
               <div className="bg-white  overflow-hidden sm:rounded-lg">
@@ -166,10 +132,7 @@ export default function Home() {
                   <Link
                     href={`/${walletAddress}/collection/${item[0].updateAuthority}`}
                   >
-                    <motion.div
-                      className="relative cursor-pointer"
-                      whileHover={{ scale: 1.03, transition }}
-                    >
+                    <motion.div className="relative cursor-pointer">
                       <Image
                         src={item?.offChain.image}
                         width={320}
@@ -188,7 +151,7 @@ export default function Home() {
               </div>
             </div>
           ))}
-        </div>
+        </motion.div>
       )}
     </>
   );

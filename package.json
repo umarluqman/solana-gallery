@@ -9,18 +9,18 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@gokiprotocol/walletkit": "^1.7.3",
     "@nfteyez/sol-rayz": "^0.10.2",
-    "@react-spring/web": "^9.5.5",
-    "@saberhq/use-solana": "^1.14.9",
+    "@solana/wallet-adapter-base": "^0.9.18",
+    "@solana/wallet-adapter-react": "^0.15.20",
+    "@solana/wallet-adapter-react-ui": "^0.9.18",
+    "@solana/wallet-adapter-wallets": "^0.19.4",
     "@solana/web3.js": "^1.63.1",
     "@tanstack/react-query": "^4.7.2",
     "framer-motion": "^6.5.1",
     "lodash.groupby": "^4.6.0",
     "next": "12.3.1",
     "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "react-error-boundary": "^3.1.4"
+    "react-dom": "18.2.0"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.3",

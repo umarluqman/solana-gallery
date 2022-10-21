@@ -1,7 +1,7 @@
 import "../styles/globals.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { AnimatePresence, motion } from "framer-motion";
-import { useRouter } from "next/router";
+
+require("@solana/wallet-adapter-react-ui/styles.css");
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -23,13 +23,10 @@ const queryClient = new QueryClient({
 });
 
 function MyApp({ Component, pageProps }) {
-  const router = useRouter();
   return (
-    <AnimatePresence exitBeforeEnter initial={false}>
-      <QueryClientProvider client={queryClient}>
-        <Component {...pageProps} />
-      </QueryClientProvider>
-    </AnimatePresence>
+    <QueryClientProvider client={queryClient}>
+      <Component {...pageProps} />
+    </QueryClientProvider>
   );
 }
 

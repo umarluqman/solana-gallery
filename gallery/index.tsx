@@ -1,11 +1,6 @@
 import * as React from "react";
-// import { useNFT } from "../hooks/useNFT";
-// import { useNFTCollection } from "../hooks/useNFTCollection";
-import Image from "next/image";
-import { AnimatePresence, motion } from "framer-motion";
+import { useRouter } from "next/router";
 import { SearchIcon } from "../components/SearchIcon";
-import Router, { useRouter } from "next/router";
-import Link from "next/link";
 
 interface IGalleryProps {}
 
@@ -27,53 +22,16 @@ export const Gallery: React.FunctionComponent<IGalleryProps> = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event?.preventDefault();
-    Router.push("/[address]", `/${address}`);
+    router.push({
+      pathname: "[address]",
+      query: { address: address, from: "front-page" },
+    });
   };
 
   return (
     <div className="grid grid-cols-12 gap-4">
       <div className="col-start-4 col-span-6">
         <div className="flex flex-col">
-          {/* <AnimatePresence>
-            <motion.div
-              key={router.route}
-              exit={{ opacity: 0 }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={transition}
-              className="flex text-5xl justify-center items-center font-sans text-gray-900 font-light text-center mb-9"
-            >
-              <motion.span
-                className="mr-5"
-                exit={{ opacity: 0 }}
-                initial={{ opacity: 1 }}
-                transition={transition}
-              >
-                <div className="rounded-lg h-10 w-10 border-2 border-gray-400 rotate-60"></div>
-              </motion.span>
-              Rect
-            </motion.div>
-          </AnimatePresence> */}
-
-          {/* <AnimatePresence exitBeforeEnter initial={false}>
-            <motion.div
-              key={address}
-              // initial={{ opacity: 0 }}
-              // animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={transition}
-              className="text-center text-slate-400 font-light tracking-wider mb-6 text-lg"
-            >
-              Explore NFTs inside any{" "}
-              <Image
-                src="/solana.svg"
-                alt="Solana Logo"
-                width={28}
-                height={16}
-              />{" "}
-              Solana wallet
-            </motion.div>
-          </AnimatePresence> */}
           <form
             className="flex content-center items-center"
             onSubmit={handleSubmit}
@@ -96,6 +54,7 @@ export const Gallery: React.FunctionComponent<IGalleryProps> = () => {
               </button>
             </div>
           </form>
+
           {/* <div className="text-center font-sans my-6">OR</div>
           <div className="text-center">
             <Link href={"/[address]"} as={`/${address}`}>

@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import CollectionOverview from "../../../gallery/collection-overview";
-import styles from "../../../styles/Home.module.css";
+import CollectionOverview from "../../../../gallery/collection-overview";
+import styles from "../../../../styles/Home.module.css";
 
 export default function Overview() {
   const { asPath, query } = useRouter();
