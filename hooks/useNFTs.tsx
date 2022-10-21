@@ -61,8 +61,6 @@ const getSolanaNFTs = async (
     }
   );
 
-  console.log({ NFTListByUpdateAuthority });
-
   const getNFTwithMetadata = async () => {
     return await Promise.all(
       NFTListByUpdateAuthority.map(async (item) => {

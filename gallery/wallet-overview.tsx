@@ -25,10 +25,8 @@ const gridTransition = {
 export default function WalletOverview({ height }: { height: number | null }) {
   const router = useRouter();
 
-  console.log({ height });
-
   const walletAddress = router.query.address as string;
-  console.log({ walletAddress });
+
   const [address, setAddress] = React.useState(walletAddress);
 
   const handleChange = React.useCallback(
@@ -44,7 +42,6 @@ export default function WalletOverview({ height }: { height: number | null }) {
 
   const {
     mutate,
-    data,
     isLoading: isDiscovering,
     error,
   } = useMutationCollection({
@@ -62,18 +59,6 @@ export default function WalletOverview({ height }: { height: number | null }) {
     mutate(walletAddress);
   };
 
-  // const isLoading = true;
-
-  console.log({ dataQuery, query: router.query });
-
-  const yValue = height / 2 - 113;
-
-  console.log({ yValue, height });
-
-  const initial = { scale: 1, y: yValue };
-
-  const animateAsProps = { scale: 0.7, y: 0 };
-
   return (
     <>
       <div className="grid grid-cols-12 gap-4">
@@ -86,7 +71,6 @@ export default function WalletOverview({ height }: { height: number | null }) {
               <motion.div
                 className="relative w-full"
                 initial={{ scale: 1, y: 305.5 }}
-                // style={{ scale: 1, y: 305.5 }}
                 animate={{ scale: 0.7, y: 0 }}
                 transition={{ duration: 1.2, ease: [0.43, 0.13, 0.23, 0.96] }}
               >

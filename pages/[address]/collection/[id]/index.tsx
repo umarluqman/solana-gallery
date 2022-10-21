@@ -7,8 +7,6 @@ import styles from "../../../../styles/Home.module.css";
 export default function Overview() {
   const { asPath, query } = useRouter();
 
-  console.log({ query });
-
   return (
     <div className={styles.container}>
       <Head>
