@@ -6,10 +6,10 @@ interface IGalleryProps {}
 
 const transition = { duration: 2.6, ease: [0.43, 0.13, 0.23, 0.96] };
 
-const defaultAddress = "Heb1FEcEuY4c7byfyS9iFzphomJb8riMCHvReqSeZURc";
+// const defaultAddress = "Heb1FEcEuY4c7byfyS9iFzphomJb8riMCHvReqSeZURc";
 
 export const Gallery: React.FunctionComponent<IGalleryProps> = () => {
-  const [address, setAddress] = React.useState(defaultAddress);
+  const [address, setAddress] = React.useState("");
 
   const router = useRouter();
 
