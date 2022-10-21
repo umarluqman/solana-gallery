@@ -14,7 +14,6 @@ export default function NFTOverview() {
   const router = useRouter();
   const walletAddress = router.query.address as string;
 
-  console.log({ walletAddress });
   const [address, setAddress] = React.useState(walletAddress);
 
   const handleChange = React.useCallback(
@@ -53,8 +52,6 @@ export default function NFTOverview() {
     event?.preventDefault();
     router.push("/[address]", `/${address}`);
   };
-
-  console.log({ nft });
 
   return (
     <>

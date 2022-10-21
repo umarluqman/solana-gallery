@@ -15,7 +15,7 @@ export default function Home() {
   const router = useRouter();
 
   const walletAddress = router.query.address as string;
-  console.log({ walletAddress });
+
   const [address, setAddress] = React.useState(walletAddress);
 
   const handleChange = React.useCallback(
@@ -48,8 +48,6 @@ export default function Home() {
     event?.preventDefault();
     router.push("/[address]", `/${address}`);
   };
-
-  console.log({ data });
 
   return (
     <>
@@ -90,33 +88,30 @@ export default function Home() {
         <Loader animate={false} />
       ) : (
         <div className="grid grid-cols-[repeat(auto-fill,_minmax(320px,_1fr))] mt-20 gap-6">
-          {data?.map(
-            (item) =>
-              console.log(item) || (
-                <div key={item.mint}>
-                  <div className="bg-white  overflow-hidden sm:rounded-lg">
-                    <div className="px-4 py-5 sm:px-6">
-                      <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
-                        {item.data.name}
-                      </h3>
-                      <Link
-                        href={`/${walletAddress}/collection/${collectionId}/${item.mint}`}
-                      >
-                        <motion.div className="relative cursor-pointer">
-                          <Image
-                            src={item?.offChain.image}
-                            width={320}
-                            height={320}
-                            className="rounded-md z-10"
-                          />
-                          <div className="w-[270px] h-[270px] absolute bg-slate-200 left-2 top-2 rounded-md blur-sm"></div>
-                        </motion.div>
-                      </Link>
-                    </div>
-                  </div>
+          {data?.map((item) => (
+            <div key={item.mint}>
+              <div className="bg-white  overflow-hidden sm:rounded-lg">
+                <div className="px-4 py-5 sm:px-6">
+                  <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
+                    {item.data.name}
+                  </h3>
+                  <Link
+                    href={`/${walletAddress}/collection/${collectionId}/${item.mint}`}
+                  >
+                    <motion.div className="relative cursor-pointer">
+                      <Image
+                        src={item?.offChain.image}
+                        width={320}
+                        height={320}
+                        className="rounded-md z-10"
+                      />
+                      <div className="w-[270px] h-[270px] absolute bg-slate-200 left-2 top-2 rounded-md blur-sm"></div>
+                    </motion.div>
+                  </Link>
                 </div>
-              )
-          )}
+              </div>
+            </div>
+          ))}
         </div>
       )}
     </>

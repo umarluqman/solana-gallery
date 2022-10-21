@@ -25,10 +25,8 @@ const gridTransition = {
 export default function WalletOverview({ height }: { height: number | null }) {
   const router = useRouter();
 
-  console.log({ height });
-
   const walletAddress = router.query.address as string;
-  console.log({ walletAddress });
+
   const [address, setAddress] = React.useState(walletAddress);
 
   const handleChange = React.useCallback(
@@ -44,7 +42,6 @@ export default function WalletOverview({ height }: { height: number | null }) {
 
   const {
     mutate,
-    data,
     isLoading: isDiscovering,
     error,
   } = useMutationCollection({
@@ -61,8 +58,6 @@ export default function WalletOverview({ height }: { height: number | null }) {
     event?.preventDefault();
     mutate(walletAddress);
   };
-
-  // const isLoading = true;
 
   console.log({ dataQuery, query: router.query });
 

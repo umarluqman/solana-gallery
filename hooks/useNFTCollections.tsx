@@ -84,8 +84,6 @@ export const getSolanaNFTCollections = async (
 
   const derivedNFTList = await getNFTCollectionwithImage();
 
-  console.log({ derivedNFTList, groupByCollection });
-
   return derivedNFTList;
 };
 
