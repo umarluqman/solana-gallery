@@ -56,7 +56,7 @@ export const getSolanaNFTCollections = async (
     });
 
     const groupByCollection = groupBy(
-      [filteredNFTList[0], filteredNFTList[5]],
+      filteredNFTList,
       (item) => item.data.symbol
     );
 
