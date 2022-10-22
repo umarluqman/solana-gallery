@@ -46,10 +46,7 @@ export default function Home() {
 
   const handleSubmit = (event: React.FormEvent) => {
     event?.preventDefault();
-    router.push({
-      pathname: "[address]",
-      query: { address: address },
-    });
+    router.push("/[address]", `/${address}`);
   };
   return (
     <>
@@ -57,10 +54,10 @@ export default function Home() {
         <div className="col-start-4 col-span-6">
           <motion.div className="flex flex-col">
             <form
-              className="flex content-center items-center"
+              className="h-[80px] flex content-center items-center"
               onSubmit={handleSubmit}
             >
-              <div className="relative w-full scale-[0.7]">
+              {/* <div className="relative w-full scale-[0.7]">
                 <input
                   type="text"
                   className="h-20 px-8 py-4 sm:text-xl shadow-[0_2px_6px_rgb(0_0_0_/_5%)] border-gray-300/50 rounded-lg placeholder:text-gray-400 w-full text-gray-900 focus:border-gray-400/50 focus:outline-transparent focus:ring-transparent transition duration-200 placeholder:font-light font-sans placeholder:text-center placeholder:text-xl cursor-text text-center"
@@ -80,7 +77,7 @@ export default function Home() {
                     }}
                   />
                 </button>
-              </div>
+              </div> */}
             </form>
           </motion.div>
         </div>

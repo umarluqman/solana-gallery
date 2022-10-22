@@ -61,10 +61,10 @@ export default function NFTOverview() {
         <div className="col-start-4 col-span-6">
           <motion.div className="flex flex-col">
             <form
-              className="flex content-center items-center"
+              className="h-[80px] flex content-center items-center"
               onSubmit={handleSubmit}
             >
-              <motion.div
+              {/* <motion.div
                 className="relative w-full"
                 // initial={{ scale: 1, y: 306 }}
                 style={{ scale: 0.7, y: 0 }}
@@ -89,7 +89,7 @@ export default function NFTOverview() {
                     }}
                   />
                 </button>
-              </motion.div>
+              </motion.div> */}
             </form>
           </motion.div>
         </div>
