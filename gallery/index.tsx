@@ -24,7 +24,7 @@ export const Gallery: React.FunctionComponent<IGalleryProps> = () => {
     event?.preventDefault();
     router.push({
       pathname: "[address]",
-      query: { address: address, from: "front-page" },
+      query: { address: address },
     });
   };
 

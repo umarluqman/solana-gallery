@@ -10,6 +10,7 @@ import {
   useQueryCollection,
 } from "../hooks/useNFTCollections";
 import { truncateAddress } from "../utils/truncateAddress";
+import { Loader } from "../components/Loader";
 
 const transition = {
   duration: 0.6,
@@ -56,8 +57,13 @@ export default function WalletOverview({ height }: { height: number | null }) {
 
   const handleSubmit = (event: React.FormEvent) => {
     event?.preventDefault();
-    mutate(walletAddress);
+    router.push({
+      pathname: "[address]",
+      query: { address: address },
+    });
   };
+
+  console.log({ dataQuery });
 
   return (
     <>
@@ -99,7 +105,9 @@ export default function WalletOverview({ height }: { height: number | null }) {
         </div>
       </div>
       <Breadcrumbs animate breadcrumbs={breadcrumbs} />
-      {isLoading ? null : (
+      {isLoading ? (
+        <Loader animate />
+      ) : (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -107,14 +115,14 @@ export default function WalletOverview({ height }: { height: number | null }) {
           className="grid grid-cols-[repeat(auto-fill,_minmax(320px,_1fr))] mt-20 gap-6"
         >
           {dataQuery?.map((item) => (
-            <div key={item.collectionName}>
+            <div key={item?.collectionName}>
               <div className="bg-white  overflow-hidden sm:rounded-lg">
                 <div className="px-4 py-5 sm:px-6">
                   <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
-                    {item.collectionName}
+                    {item?.collectionName}
                   </h3>
                   <Link
-                    href={`/${walletAddress}/collection/${item[0].updateAuthority}`}
+                    href={`/${walletAddress}/collection/${item?.[0]?.updateAuthority}`}
                   >
                     <motion.div className="relative cursor-pointer">
                       <Image
@@ -123,11 +131,13 @@ export default function WalletOverview({ height }: { height: number | null }) {
                         height={320}
                         className="rounded-md z-10"
                       />
-                      <div className="sm:text-sm px-2 py-1 rounded-full absolute top-2 left-2 bg-slate-900 opacity-60 z-20">
-                        <div className="text-slate-50">
-                          {Object.keys(item).length - 2 + " items"}
+                      {item && (
+                        <div className="sm:text-sm px-2 py-1 rounded-full absolute top-2 left-2 bg-slate-900 opacity-60 z-20">
+                          <div className="text-slate-50">
+                            {Object.keys(item).length - 2 + " items"}
+                          </div>
                         </div>
-                      </div>
+                      )}
                       <div className="w-[270px] h-[270px] absolute bg-slate-200 left-2 top-2 rounded-md blur-sm"></div>
                     </motion.div>
                   </Link>

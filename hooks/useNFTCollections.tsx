@@ -45,46 +45,64 @@ export interface IuseNFTProps {
 export const getSolanaNFTCollections = async (
   publicAddress: IuseNFTProps["publicAddress"]
 ): Promise<NFTTokenAccount[]> => {
-  const NFTList = await getParsedNftAccountsByOwner({
-    publicAddress: publicAddress,
-    connection: new Connection("https://solana-api.projectserum.com"),
-  });
+  try {
+    const NFTList = await getParsedNftAccountsByOwner({
+      publicAddress: publicAddress,
+      connection: new Connection("https://solana-api.projectserum.com"),
+    });
 
-  const filteredNFTList = NFTList.filter((item) => {
-    return item.data.creators !== undefined;
-  });
+    const filteredNFTList = NFTList.filter((item) => {
+      return item.data.creators !== undefined;
+    });
 
-  const groupByCollection = groupBy(
-    filteredNFTList,
-    (item) => item.data.symbol
-  );
-
-  //   const collectionList = Object.keys(groupByCollection).map((key) => {
-  //     return {
-  //       collectionName: groupByCollection[key][0].data.name.split(" #")[0],
-  //       collection: groupByCollection[key],
-  //     };
-  //   });
-
-  const getNFTCollectionwithImage = async () => {
-    return await Promise.all(
-      Object.keys(groupByCollection).map(async (key) => {
-        const response = await fetch(groupByCollection[key][0].data.uri);
-        const data = await response.json();
-        return {
-          collectionName: groupByCollection[key][0].data.name.split(" #")[0],
-          ...groupByCollection[key],
-          offChain: {
-            ...data,
-          },
-        };
-      })
+    const groupByCollection = groupBy(
+      [filteredNFTList[0], filteredNFTList[5]],
+      (item) => item.data.symbol
     );
-  };
 
-  const derivedNFTList = await getNFTCollectionwithImage();
+    //   const collectionList = Object.keys(groupByCollection).map((key) => {
+    //     return {
+    //       collectionName: groupByCollection[key][0].data.name.split(" #")[0],
+    //       collection: groupByCollection[key],
+    //     };
+    //   });
 
-  return derivedNFTList;
+    console.log({
+      groupByCollection: groupByCollection[Object.keys(groupByCollection)[0]],
+    });
+
+    const getNFTCollectionwithImage = async () => {
+      return await Promise.all(
+        Object.keys(groupByCollection).map(async (key, index) => {
+          try {
+            const response = await fetch(groupByCollection[key][0].data.uri);
+            const data = await response.json();
+            console.log({ data, number: index + 1 });
+            return {
+              collectionName:
+                groupByCollection[key][0]?.data?.name?.split(" #")[0],
+              ...groupByCollection[key],
+              offChain: {
+                ...data,
+              },
+            };
+          } catch (error) {
+            console.log({ x: error });
+          }
+        })
+      );
+    };
+
+    const derivedNFTList = await getNFTCollectionwithImage();
+
+    const filterNFTs = derivedNFTList.filter((item) => item !== undefined);
+
+    console.log({ filterNFTs });
+
+    return filterNFTs;
+  } catch (error) {
+    console.log({ error });
+  }
 };
 
 export const useMutationCollection = ({

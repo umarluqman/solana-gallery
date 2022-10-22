@@ -36,7 +36,7 @@ export const Breadcrumbs = ({ breadcrumbs, animate }: IProps) => {
       initial={animate && { opacity: 0 }}
       animate={animate && { opacity: 1 }}
       transition={{ duration: 0.6, delay: 1, ease: [0.43, 0.13, 0.23, 0.96] }}
-      className="flex mt-12 px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700"
+      className="flex mt-12 px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-gray-50"
       aria-label="Breadcrumb"
     >
       <ol className="inline-flex items-center space-x-1 md:space-x-3">
@@ -48,9 +48,7 @@ export const Breadcrumbs = ({ breadcrumbs, animate }: IProps) => {
                 <Link href={breadcrumb.href}>
                   <a
                     href="#"
-                    className={
-                      "ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400"
-                    }
+                    className={"ml-1 text-sm font-medium text-gray-500 md:ml-2"}
                   >
                     {breadcrumb.title}
                   </a>
@@ -63,7 +61,7 @@ export const Breadcrumbs = ({ breadcrumbs, animate }: IProps) => {
                 {index !== 0 && <NavIcon />}
                 <span
                   className={
-                    "ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white"
+                    "ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2"
                   }
                 >
                   {breadcrumb.title}

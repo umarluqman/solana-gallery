@@ -46,9 +46,11 @@ export default function Home() {
 
   const handleSubmit = (event: React.FormEvent) => {
     event?.preventDefault();
-    router.push("/[address]", `/${address}`);
+    router.push({
+      pathname: "[address]",
+      query: { address: address },
+    });
   };
-
   return (
     <>
       <div className="grid grid-cols-12 gap-4">
