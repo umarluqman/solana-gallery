@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useMemo } from "react";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import { SearchIcon } from "../components/SearchIcon";
 import {
@@ -63,7 +63,13 @@ export default function WalletOverview({ height }: { height: number | null }) {
     });
   };
 
-  console.log({ dataQuery });
+  const totalNFTs = useMemo(() => {
+    return dataQuery?.reduce((acc, item) => {
+      return acc + Object.keys(item).length;
+    }, 0);
+  }, [dataQuery]);
+
+  console.log({ dataQuery, totalNFTs });
 
   return (
     <>
@@ -108,44 +114,47 @@ export default function WalletOverview({ height }: { height: number | null }) {
       {isLoading ? (
         <Loader animate />
       ) : (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={gridTransition}
-          className="grid grid-cols-[repeat(auto-fill,_minmax(320px,_1fr))] mt-20 gap-6"
-        >
-          {dataQuery?.map((item) => (
-            <div key={item?.collectionName}>
-              <div className="bg-white  overflow-hidden sm:rounded-lg">
-                <div className="px-4 py-5 sm:px-6">
-                  <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
-                    {item?.collectionName}
-                  </h3>
-                  <Link
-                    href={`/${walletAddress}/collection/${item?.[0]?.updateAuthority}`}
-                  >
-                    <motion.div className="relative cursor-pointer">
-                      <Image
-                        src={item?.offChain.image}
-                        width={320}
-                        height={320}
-                        className="rounded-md z-10"
-                      />
-                      {item && (
-                        <div className="sm:text-sm px-2 py-1 rounded-full absolute top-2 left-2 bg-slate-900 opacity-60 z-20">
-                          <div className="text-slate-50">
-                            {Object.keys(item).length - 2 + " items"}
+        <>
+          <div className="mt-6">{`${dataQuery?.length} Collections - ${totalNFTs} NFTs`}</div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={gridTransition}
+            className="grid grid-cols-[repeat(auto-fill,_minmax(320px,_1fr))] mt-20 gap-6"
+          >
+            {dataQuery?.map((item) => (
+              <div key={item?.collectionName}>
+                <div className="bg-white  overflow-hidden sm:rounded-lg">
+                  <div className="px-4 py-5 sm:px-6">
+                    <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
+                      {item?.collectionName}
+                    </h3>
+                    <Link
+                      href={`/${walletAddress}/collection/${item?.[0]?.updateAuthority}`}
+                    >
+                      <motion.div className="relative cursor-pointer">
+                        <Image
+                          src={item?.offChain.image}
+                          width={320}
+                          height={320}
+                          className="rounded-md z-10"
+                        />
+                        {item && (
+                          <div className="sm:text-sm px-2 py-1 rounded-full absolute top-2 left-2 bg-slate-900 opacity-60 z-20">
+                            <div className="text-slate-50">
+                              {Object.keys(item).length - 2 + " items"}
+                            </div>
                           </div>
-                        </div>
-                      )}
-                      <div className="w-[270px] h-[270px] absolute bg-slate-200 left-2 top-2 rounded-md blur-sm"></div>
-                    </motion.div>
-                  </Link>
+                        )}
+                        <div className="w-[270px] h-[270px] absolute bg-slate-200 left-2 top-2 rounded-md blur-sm"></div>
+                      </motion.div>
+                    </Link>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </motion.div>
+            ))}
+          </motion.div>
+        </>
       )}
     </>
   );
