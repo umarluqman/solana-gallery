@@ -53,6 +53,20 @@ const nextConfig = {
         protocol: "https",
         hostname: "**.cloudflare-ipfs.com",
       },
+      {
+        protocol: "https",
+        hostname: "famousfoxes.com",
+      },
+      {
+        protocol: "https",
+        hostname: "genesysgo.net",
+      },
+      {
+        protocol: "https",
+        hostname: "**.genesysgo.net",
+      },
+      { protocol: "https", hostname: "mypinata.cloud" },
+      { protocol: "https", hostname: "**.mypinata.cloud" },
     ],
   },
 };
