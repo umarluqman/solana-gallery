@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { animate, motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -115,7 +115,16 @@ export default function WalletOverview({ height }: { height: number | null }) {
         <Loader animate />
       ) : (
         <>
-          <div className="mt-6">{`${dataQuery?.length} Collections - ${totalNFTs} NFTs`}</div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{
+              duration: 0.6,
+              delay: 1,
+              ease: [0.43, 0.13, 0.23, 0.96],
+            }}
+            className="mt-6"
+          >{`${dataQuery?.length} Collections - ${totalNFTs} NFTs`}</motion.div>
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
