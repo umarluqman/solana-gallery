@@ -40,7 +40,7 @@ export const Gallery: React.FunctionComponent<IGalleryProps> = () => {
               <input
                 type="text"
                 className="h-20 px-8 py-4 sm:text-xl shadow-[0_2px_6px_rgb(0_0_0_/_5%)] border-gray-300/50 rounded-lg placeholder:text-gray-400 w-full text-gray-900 focus:border-gray-400/50 focus:outline-transparent focus:ring-transparent transition duration-200 placeholder:font-light font-sans placeholder:text-center placeholder:text-xl cursor-text text-center"
-                placeholder="enter wallet address"
+                placeholder="enter solana wallet address"
                 onChange={handleChange}
                 value={address}
               ></input>
